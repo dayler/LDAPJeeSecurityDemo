@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://java.sun.com/xml/ns/javaee" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd" id="WebApp_ID" version="3.0">
   <display-name>LDAPJeeSecurityDemo</display-name>
+  <!-- Jersey conf -->
+  <!-- Security basic conf -->
   <error-page>
     <error-code>403</error-code>
     <location>/AccessDenied403.jsp</location>
@@ -13,9 +15,6 @@
     </web-resource-collection>
     <auth-constraint>
       <role-name>USER</role-name>
-      <!-- <role-name>*</role-name> -->
-      <!-- <role-name>GeneralUser</role-name>
-      <role-name>Administrator</role-name> -->
     </auth-constraint>
     <user-data-constraint>
       <!-- <transport-guarantee>CONFIDENTIAL</transport-guarantee> -->
@@ -30,9 +29,6 @@
       <form-error-page>/LoginError.jsp</form-error-page>
     </form-login-config>
   </login-config>
-  <!-- <security-role>
-    <role-name>Admin</role-name>
-  </security-role> -->
   <security-role>
     <role-name>USER</role-name>
   </security-role>
@@ -47,25 +43,37 @@
   <session-config>
     <session-timeout>30</session-timeout>
   </session-config>
-  <!--  <security-role>
-    <description/>
-    <role-name>user1</role-name>
-  </security-role> -->
+  <!-- JSF conf -->
   <welcome-file-list>
-    <!-- <welcome-file>welcome.xhtml</welcome-file> -->
     <welcome-file>index.htm</welcome-file>
     <welcome-file>index.jsp</welcome-file>
     <welcome-file>default.html</welcome-file>
     <welcome-file>default.htm</welcome-file>
     <welcome-file>default.jsp</welcome-file>
   </welcome-file-list>
+  <!-- Servlet for JSF -->
   <servlet>
     <servlet-name>Faces Servlet</servlet-name>
     <servlet-class>javax.faces.webapp.FacesServlet</servlet-class>
     <load-on-startup>1</load-on-startup>
   </servlet>
+  <!-- Servlet for jersey -->
+  <servlet>
+    <servlet-name>JerseyRESTService</servlet-name>
+    <servlet-class>com.sun.jersey.spi.container.servlet.ServletContainer</servlet-class>
+    <init-param>
+      <param-name>com.sun.jersey.config.property.packages</param-name>
+      <!-- Base package to look resources -->
+      <param-value>com.dayler.sample.restful</param-value>
+    </init-param>
+    <load-on-startup>1</load-on-startup>
+  </servlet>
   <servlet-mapping>
     <servlet-name>Faces Servlet</servlet-name>
     <url-pattern>/faces/*</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>JerseyRESTService</servlet-name>
+    <url-pattern>/rest/*</url-pattern>
   </servlet-mapping>
 </web-app>
